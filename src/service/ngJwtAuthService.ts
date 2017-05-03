@@ -216,16 +216,18 @@ export class NgJwtAuthService {
      * Retrieve the token from the remote API
      * @param endpoint
      * @param authHeader
+     * @param data
      * @returns {IPromise<IUser>}
      */
-    private retrieveAndProcessToken(endpoint:string, authHeader:string):ng.IPromise<IUser> {
+    private retrieveAndProcessToken(endpoint:string, authHeader:string, data: {}):ng.IPromise<IUser> {
 
         let requestConfig:ng.IRequestConfig = {
-            method: 'GET',
+            method: 'POST',
             url: endpoint,
             headers: {
                 Authorization: authHeader
             },
+            data: data,
             responseType: 'json'
         };
 
@@ -426,8 +428,9 @@ export class NgJwtAuthService {
 
         let authHeader = NgJwtAuthService.getAuthHeader(username, password);
         let endpoint = this.getLoginEndpoint();
+        let data = {'username': username, 'password': password};
 
-        return this.retrieveAndProcessToken(endpoint, authHeader);
+        return this.retrieveAndProcessToken(endpoint, authHeader, data);
 
     }
 
